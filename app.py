@@ -15,10 +15,10 @@ df = pd.read_csv("data/detenciones_L1_2026.csv")
 st.sidebar.header("Filtros")
 turno = st.sidebar.selectbox("Turno", ["Todos", "Día", "Noche"])
 
-horas_planificadas = 8424
+horas_planificadas = 8760 * 2  # horas-reactor: 2 reactores, año 2026 completo
 if turno != "Todos":
     df = df[df["turno"] == turno]
-    horas_planificadas = 8424 / 2  # cada turno tiene la mitad de las horas
+    horas_planificadas = horas_planificadas / 2  # cada turno tiene la mitad de las horas
 
 # Indicadores del año
 horas_detenidas = df["minutos"].sum() / 60
@@ -26,7 +26,7 @@ disponibilidad = (horas_planificadas - horas_detenidas) / horas_planificadas * 1
 
 col1, col2, col3 = st.columns(3)
 col1.metric("Disponibilidad 2026", f"{disponibilidad:.1f} %", f"{disponibilidad - 80:.1f} pts vs meta")
-col2.metric("Horas detenidas", f"{horas_detenidas:.0f} h")
+col2.metric("Horas-reactor detenidas", f"{horas_detenidas:.0f} h")
 col3.metric("N° de detenciones", len(df))
 
 # Pareto de causas

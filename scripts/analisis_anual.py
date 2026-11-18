@@ -5,7 +5,7 @@ df = pd.read_csv("data/detenciones_L1_2026.csv")
 print("Registros cargados:", len(df))
 
 # Disponibilidad del año
-horas_planificadas = 8424  # ficha, sección 5
+horas_planificadas = 8760 * 2  # horas-reactor: 2 reactores, año 2026 completo
 horas_detenidas = df["minutos"].sum() / 60
 disponibilidad = (horas_planificadas - horas_detenidas) / horas_planificadas * 100
 
