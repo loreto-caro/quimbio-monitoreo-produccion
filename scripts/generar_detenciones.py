@@ -30,10 +30,10 @@ for i in range(n):
     }
     registros.append(registro)
 
-# Armar la tabla y guardarla (reemplaza la versión 1)
+# Armar la tabla, ordenarla por fecha y guardarla
 df = pd.DataFrame(registros).sort_values("fecha")
-df.to_csv("detenciones_L1_2026.csv", index=False)
+df.to_csv("data/detenciones_L1_2026.csv", index=False)
 
 print(df.head(10))
 print("Total de registros:", len(df))
-print("Archivo actualizado: detenciones_L1_2026.csv (versión 2)")
+print("Archivo actualizado: data/detenciones_L1_2026.csv")

@@ -9,7 +9,7 @@ st.title("🏭 QuimBío Minería · Monitoreo Línea 1")
 st.caption("Empresa ficticia – proyecto de portafolio de Loreto")
 
 # Leer los datos
-df = pd.read_csv("detenciones_L1_2026.csv")
+df = pd.read_csv("data/detenciones_L1_2026.csv")
 
 # Filtro interactivo en la barra lateral
 st.sidebar.header("Filtros")
@@ -33,7 +33,7 @@ col3.metric("N° de detenciones", len(df))
 pareto = df.groupby("causa")["minutos"].sum().sort_values(ascending=False).to_frame()
 pareto["horas"] = (pareto["minutos"] / 60).round(1)
 pareto["porcentaje"] = (pareto["minutos"] / pareto["minutos"].sum() * 100).round(1)
-pareto["acumulado"] = pareto["porcentaje"].cumsum().round(1)
+pareto["acumulado"] = (pareto["minutos"].cumsum() / pareto["minutos"].sum() * 100).round(1)
 pareto = pareto.reset_index()
 
 st.subheader("Pareto de causas de detención")
