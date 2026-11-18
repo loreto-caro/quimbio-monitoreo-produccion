@@ -13,7 +13,7 @@ El objetivo es **identificar dónde se pierde tiempo productivo**, a partir del 
 - **Disponibilidad anual** de los reactores, comparada con la meta del 80%.
 - **Horas-reactor detenidas** y **número de detenciones** del período.
 - **Diagrama de Pareto** de las causas de detención, ponderado por tiempo perdido.
-- **Evolución mensual** de las horas detenidas, con el umbral máximo para cumplir la meta.
+- **Evolución mensual de la disponibilidad**, normalizada según las horas planificadas de cada mes y comparada con la meta.
 - **Filtro por turno** (día y noche).
 
 ## Metodología
@@ -63,7 +63,7 @@ streamlit run app.py
 
 - [x] Medir la disponibilidad sobre la máquina **cuello de botella** (reactores).
 - [x] Registrar la **hora de inicio** de cada detención, sin superposiciones en un mismo reactor.
-- [ ] Incorporar la **parada anual** de 14 días al modelo.
+- [x] Incorporar la **parada anual** de 14 días al modelo.
 - [ ] Calcular el **OEE** completo (disponibilidad, rendimiento y calidad) con semáforo de metas.
 - [ ] Incorporar las Líneas 2 y 3, mantención (MTBF y MTTR), calidad, ambiente y logística.
 - [ ] Publicar el dashboard en internet.

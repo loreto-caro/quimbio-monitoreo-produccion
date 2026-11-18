@@ -15,6 +15,10 @@ INICIO = datetime(2026, 1, 1, 0, 0)
 FIN = datetime(2027, 1, 1, 0, 0)
 REACTORES = ["QBM-L1-R01", "QBM-L1-R02"]
 
+# Parada anual programada (mantención mayor de verano)
+INICIO_PARADA = datetime(2026, 2, 1, 8, 0)
+DIAS_PARADA = 14
+
 HORAS_REACCION = 7
 TONELADAS_POR_LOTE = 8
 
@@ -35,8 +39,14 @@ def simular_reactor(reactor):
     lotes = []
     detenciones = []
     numero = 0
+    parada_realizada = False
 
     while reloj < FIN:
+        # Parada anual: comienza al terminar el lote en curso
+        if not parada_realizada and reloj >= INICIO_PARADA:
+            reloj = reloj + timedelta(days=DIAS_PARADA)
+            parada_realizada = True
+
         # Reacción del lote
         numero = numero + 1
         inicio = reloj
@@ -81,7 +91,8 @@ df_lotes.to_csv("data/lotes_L1_2026.csv", index=False)
 df_det.to_csv("data/detenciones_L1_2026.csv", index=False)
 
 # ===== Validación del modelo =====
-horas_planificadas = (FIN - INICIO).total_seconds() / 3600 * len(REACTORES)
+horas_parada = DIAS_PARADA * 24
+horas_planificadas = ((FIN - INICIO).total_seconds() / 3600 - horas_parada) * len(REACTORES)
 horas_detenidas = df_det["minutos"].sum() / 60
 disponibilidad = (horas_planificadas - horas_detenidas) / horas_planificadas * 100
 

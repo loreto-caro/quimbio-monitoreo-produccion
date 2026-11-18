@@ -15,7 +15,7 @@ df = pd.read_csv("data/detenciones_L1_2026.csv")
 st.sidebar.header("Filtros")
 turno = st.sidebar.selectbox("Turno", ["Todos", "Día", "Noche"])
 
-horas_planificadas = 8760 * 2  # horas-reactor: 2 reactores, año 2026 completo
+horas_planificadas = 8424 * 2  # horas-reactor: 2 reactores, descontando la parada anual de 14 días
 if turno != "Todos":
     df = df[df["turno"] == turno]
     horas_planificadas = horas_planificadas / 2  # cada turno tiene la mitad de las horas
@@ -40,17 +40,27 @@ st.subheader("Pareto de causas de detención")
 grafico = px.bar(pareto, x="causa", y="horas", text="porcentaje")
 grafico.update_traces(texttemplate="%{text} %")
 st.plotly_chart(grafico)
-# Evolución mensual
-st.subheader("Evolución mensual de horas detenidas")
+
+# Evolución mensual de la disponibilidad
+st.subheader("Evolución mensual de la disponibilidad")
 df["mes"] = pd.to_datetime(df["fecha"]).dt.month
 mensual = df.groupby("mes")["minutos"].sum().reset_index()
-mensual["horas"] = (mensual["minutos"] / 60).round(1)
-grafico_mes = px.line(mensual, x="mes", y="horas", markers=True)
-grafico_mes.update_yaxes(rangemode="tozero")
+mensual["horas_detenidas"] = mensual["minutos"] / 60
+
+# Horas-reactor planificadas de cada mes: horas del mes × 2 reactores, menos la parada anual de febrero
+horas_del_mes = pd.Series(pd.date_range("2026-01-01", "2027-01-01", freq="h", inclusive="left")).dt.month.value_counts()
+mensual["horas_planificadas"] = mensual["mes"].map(horas_del_mes) * 2
+mensual.loc[mensual["mes"] == 2, "horas_planificadas"] -= 14 * 24 * 2
+if turno != "Todos":
+    mensual["horas_planificadas"] = mensual["horas_planificadas"] / 2
+
+mensual["disponibilidad"] = ((mensual["horas_planificadas"] - mensual["horas_detenidas"]) / mensual["horas_planificadas"] * 100).round(1)
+
+grafico_mes = px.line(mensual, x="mes", y="disponibilidad", markers=True)
+grafico_mes.update_yaxes(range=[0, 100], title="Disponibilidad (%)")
 grafico_mes.update_xaxes(dtick=1)
-maximo_mensual = horas_planificadas / 12 * 0.20
-grafico_mes.add_hline(y=maximo_mensual, line_dash="dash", line_color="red",
-                      annotation_text=f"Máximo para cumplir meta ({maximo_mensual:.0f} h)")
+grafico_mes.add_hline(y=80, line_dash="dash", line_color="red", annotation_text="Meta 80%", annotation_position="top left")
 st.plotly_chart(grafico_mes)
+
 st.subheader("Detalle")
 st.dataframe(pareto, hide_index=True)
