@@ -616,3 +616,28 @@ h1, h2, h3 {
 .foto-sostenibilidad {
     object-position: center 25%;
 }
+/* ===== Trabaja con nosotros: texto + foto ===== */
+.trabaja {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 64px;
+}
+
+.foto-vertical {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+@media (max-width: 900px) {
+    .trabaja {
+        grid-template-columns: 1fr;
+    }
+
+    .foto-vertical {
+        height: 320px;
+        object-position: center 10%;
+    }
+}
