@@ -10,10 +10,11 @@ El objetivo es **identificar dónde se pierde tiempo productivo**, a partir del 
 
 ## Funcionalidades actuales
 
-- **Disponibilidad anual** de los reactores, comparada con la meta del 80%.
-- **Horas-reactor detenidas** y **número de detenciones** del período.
+- **OEE anual** y sus tres factores (disponibilidad, rendimiento y calidad), comparados con sus metas.
+- **Toneladas buenas**, horas-reactor detenidas y número de detenciones del período.
 - **Diagrama de Pareto** de las causas de detención, ponderado por tiempo perdido.
-- **Disponibilidad mensual con semáforo** (cumple / bajo la meta), normalizada según las horas planificadas de cada mes.
+- **OEE mensual con semáforo** de tres niveles (cumple meta, alerta y crítico), normalizado según las horas planificadas de cada mes.
+- **Tabla mensual** con los tres factores del OEE, para identificar la causa de cada desviación.
 - **Filtro por turno** (día y noche).
 
 ## Metodología
@@ -65,7 +66,7 @@ streamlit run app.py
 - [x] Registrar la **hora de inicio** de cada detención, sin superposiciones en un mismo reactor.
 - [x] Incorporar la **parada anual** de 14 días al modelo.
 - [x] Incorporar la **estacionalidad de invierno**: episodios críticos de contaminación (D08) y cierres del puerto (D04).
-- [ ] Calcular el **OEE** completo (disponibilidad, rendimiento y calidad) con semáforo de metas.
+- [x] Calcular el **OEE** completo (disponibilidad, rendimiento y calidad) con semáforo de metas.
 - [ ] Incorporar las Líneas 2 y 3, mantención (MTBF y MTTR), calidad, ambiente y logística.
 - [ ] Publicar el dashboard en internet.
 
