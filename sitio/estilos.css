@@ -467,3 +467,48 @@ h1, h2, h3 {
     color: var(--cobre-boton);
     font-weight: 600;
 }
+/* ===== Pie de página ===== */
+.pie {
+    background-color: var(--azul-petroleo);
+    color: var(--texto-sobre-azul);
+    padding: 64px 6% 32px;
+}
+
+.pie-contenido {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 32px;
+}
+
+.pie .logo {
+    color: var(--blanco);
+    margin: 0 0 8px;
+}
+
+.pie-frase {
+    margin: 0;
+    max-width: 360px;
+}
+
+.pie-enlaces {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 24px;
+}
+
+.pie-enlaces a {
+    color: var(--texto-sobre-azul);
+    text-decoration: none;
+}
+
+.pie-enlaces a:hover {
+    color: var(--cobre-claro);
+}
+
+.pie-aviso {
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    margin: 48px 0 0;
+    padding-top: 24px;
+    font-size: 14px;
+}
