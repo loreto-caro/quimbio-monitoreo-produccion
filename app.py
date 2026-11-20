@@ -2,11 +2,12 @@ import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-# ===== Parámetros (ficha de la empresa, sección 7) =====
-VELOCIDAD_IDEAL = 8 / 7                # t/h por reactor (lote de 8 t en 7 h)
-HORAS_PLANIFICADAS_ANIO = 8424 * 2     # horas-reactor: 2 reactores, descontando la parada anual
-META = {"OEE": 62, "Disponibilidad": 80, "Rendimiento": 85, "Calidad": 92}
-ALERTA_OEE = 50                        # bajo este valor, el OEE es crítico (rojo)
+from config import ALERTA_OEE, DIAS_PARADA, FIN, HORAS_PLANIFICADAS, INICIO, INICIO_PARADA, META, REACTORES, VELOCIDAD_IDEAL
+
+# Textos del semáforo, construidos a partir de las metas
+ESTADO_VERDE = f"Cumple meta (≥ {META['OEE']}%)"
+ESTADO_AMARILLO = f"Alerta ({ALERTA_OEE}–{META['OEE']}%)"
+ESTADO_ROJO = f"Crítico (< {ALERTA_OEE}%)"
 
 
 def calcular_oee(horas_planificadas, horas_detenidas, toneladas, toneladas_buenas):
@@ -37,7 +38,7 @@ lotes.loc[lotes["fin"].dt.hour.between(8, 19), "turno"] = "Día"
 st.sidebar.header("Filtros")
 turno = st.sidebar.selectbox("Turno", ["Todos", "Día", "Noche"])
 
-horas_planificadas = HORAS_PLANIFICADAS_ANIO
+horas_planificadas = HORAS_PLANIFICADAS
 if turno != "Todos":
     detenciones = detenciones[detenciones["turno"] == turno]
     lotes = lotes[lotes["turno"] == turno]
@@ -83,10 +84,11 @@ mensual["horas_detenidas"] = mensual["mes"].map(detenciones.groupby("mes")["minu
 mensual["toneladas"] = mensual["mes"].map(lotes.groupby("mes")["toneladas"].sum())
 mensual["toneladas_buenas"] = mensual["mes"].map(lotes.groupby("mes")["toneladas_buenas"].sum())
 
-# Horas-reactor planificadas de cada mes: horas del mes × 2 reactores, menos la parada anual de febrero
-horas_del_mes = pd.Series(pd.date_range("2026-01-01", "2027-01-01", freq="h", inclusive="left")).dt.month.value_counts()
-mensual["horas_planificadas"] = mensual["mes"].map(horas_del_mes) * 2
-mensual.loc[mensual["mes"] == 2, "horas_planificadas"] -= 14 * 24 * 2
+# Horas-reactor planificadas de cada mes: horas del mes × reactores, menos la parada anual
+# (supuesto: la parada completa cae dentro del mes en que comienza)
+horas_del_mes = pd.Series(pd.date_range(INICIO, FIN, freq="h", inclusive="left")).dt.month.value_counts()
+mensual["horas_planificadas"] = mensual["mes"].map(horas_del_mes) * len(REACTORES)
+mensual.loc[mensual["mes"] == INICIO_PARADA.month, "horas_planificadas"] -= DIAS_PARADA * 24 * len(REACTORES)
 if turno != "Todos":
     mensual["horas_planificadas"] = mensual["horas_planificadas"] / 2
 
@@ -94,17 +96,16 @@ if turno != "Todos":
 mensual["disponibilidad"], mensual["rendimiento"], mensual["calidad"], mensual["oee"] = calcular_oee(
     mensual["horas_planificadas"], mensual["horas_detenidas"], mensual["toneladas"], mensual["toneladas_buenas"])
 
-# Semáforo de 3 colores (ficha, sección 7)
+# Semáforo de 3 niveles (ficha, sección 7)
 nombres_meses = {1: "Ene", 2: "Feb", 3: "Mar", 4: "Abr", 5: "May", 6: "Jun",
                  7: "Jul", 8: "Ago", 9: "Sep", 10: "Oct", 11: "Nov", 12: "Dic"}
 mensual["nombre_mes"] = mensual["mes"].map(nombres_meses)
-mensual["estado"] = "Cumple meta (≥ 62%)"
-mensual.loc[mensual["oee"] < META["OEE"], "estado"] = "Alerta (50–62%)"
-mensual.loc[mensual["oee"] < ALERTA_OEE, "estado"] = "Crítico (< 50%)"
+mensual["estado"] = ESTADO_VERDE
+mensual.loc[mensual["oee"] < META["OEE"], "estado"] = ESTADO_AMARILLO
+mensual.loc[mensual["oee"] < ALERTA_OEE, "estado"] = ESTADO_ROJO
 
 grafico_mes = px.bar(mensual, x="nombre_mes", y=mensual["oee"].round(1), color="estado", text=mensual["oee"].round(1),
-                     color_discrete_map={"Cumple meta (≥ 62%)": "#2E7D32", "Alerta (50–62%)": "#B26A00",
-                                         "Crítico (< 50%)": "#C62828"},
+                     color_discrete_map={ESTADO_VERDE: "#2E7D32", ESTADO_AMARILLO: "#B26A00", ESTADO_ROJO: "#C62828"},
                      category_orders={"nombre_mes": list(nombres_meses.values())})
 grafico_mes.update_traces(texttemplate="%{text}%", textposition="inside", insidetextanchor="start",
                           textfont_color="white", hovertemplate="%{x}: %{y}%<extra></extra>")
@@ -112,9 +113,9 @@ grafico_mes.update_yaxes(range=[0, 100], title="OEE (%)")
 grafico_mes.update_xaxes(title="")
 grafico_mes.update_layout(legend_title_text="")
 grafico_mes.add_hline(y=META["OEE"], line_dash="dash", line_color="black",
-                      annotation_text="Meta 62%", annotation_position="top left")
+                      annotation_text=f"Meta {META['OEE']}%", annotation_position="top left")
 grafico_mes.add_hline(y=ALERTA_OEE, line_dash="dot", line_color="gray",
-                      annotation_text="Alerta 50%", annotation_position="bottom left")
+                      annotation_text=f"Alerta {ALERTA_OEE}%", annotation_position="bottom left")
 st.plotly_chart(grafico_mes)
 
 # Tabla mensual con los tres factores

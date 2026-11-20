@@ -39,12 +39,12 @@ Python · pandas · NumPy · Streamlit · Plotly · Git y GitHub
 
 ```
 ├── app.py                      # Dashboard web (Streamlit)
+├── config.py                   # Datos de la planta y metas (fuente única)
 ├── requirements.txt            # Librerías necesarias
 ├── data/                       # Datos generados (CSV)
 ├── docs/                       # Ficha técnica de la empresa
 ├── scripts/
-│   ├── simular_planta.py       # Simula los reactores y genera los datos
-│   └── analisis_anual.py       # Análisis anual por consola
+│   └── simular_planta.py       # Simula los reactores y genera los datos
 └── ejercicios/                 # Prácticas de aprendizaje de Python
 ```
 
@@ -56,7 +56,7 @@ cd quimbio-monitoreo-produccion
 python -m venv .venv
 .venv\Scripts\activate
 pip install -r requirements.txt
-python scripts/simular_planta.py
+python -m scripts.simular_planta
 streamlit run app.py
 ```
 

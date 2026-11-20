@@ -1,29 +1,24 @@
 """
 Simulador de la Línea 1 (floculantes) de QuimBío Minería.
 
-Simula el ciclo de los dos reactores (cuello de botella de la línea) durante 2026
+Simula el ciclo de los dos reactores (cuello de botella de la línea) durante el período
 y genera las tablas de lotes y detenciones en la carpeta data/.
 Incluye la parada anual, la estacionalidad del invierno y las pérdidas de
 rendimiento y calidad necesarias para calcular el OEE.
+
+Los datos de la planta se leen desde config.py. Ejecutar desde la raíz del proyecto:
+    python -m scripts.simular_planta
 """
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 import numpy as np
 import pandas as pd
 
-# ===== Parámetros del modelo (calibrados) =====
+from config import (DIAS_PARADA, FIN, HORAS_PLANIFICADAS, HORAS_REACCION, INICIO,
+                    INICIO_PARADA, REACTORES, TONELADAS_POR_LOTE, VELOCIDAD_IDEAL)
+
+# ===== Parámetros de calibración del modelo =====
 SEMILLA = 42
-INICIO = datetime(2026, 1, 1, 0, 0)
-FIN = datetime(2027, 1, 1, 0, 0)
-REACTORES = ["QBM-L1-R01", "QBM-L1-R02"]
-
-# Parada anual programada (mantención mayor de verano)
-INICIO_PARADA = datetime(2026, 2, 1, 8, 0)
-DIAS_PARADA = 14
-
-# Lote: 8 t en 7 h ideales (velocidad ideal de 1,143 t/h por reactor)
-HORAS_REACCION = 7
-TONELADAS_POR_LOTE = 8
 
 # Rendimiento: la reacción real dura más que la ideal
 VARIACION_REACCION = (20, 100)   # minutos adicionales en todo lote
@@ -145,7 +140,7 @@ for reactor in REACTORES:
 df_lotes = pd.DataFrame(todos_los_lotes)
 df_det = pd.DataFrame(todas_las_detenciones)
 
-# ===== Cierre del período: solo cuenta lo ocurrido dentro de 2026 =====
+# ===== Cierre del período: solo cuenta lo ocurrido dentro del período =====
 df_lotes = df_lotes[df_lotes["fin"] <= FIN]
 df_det = df_det[df_det["inicio"] < FIN]
 df_det["fin"] = df_det["fin"].clip(upper=FIN)
@@ -161,20 +156,17 @@ df_lotes.to_csv("data/lotes_L1_2026.csv", index=False)
 df_det.to_csv("data/detenciones_L1_2026.csv", index=False)
 
 # ===== Validación del modelo: OEE =====
-horas_parada = DIAS_PARADA * 24
-horas_planificadas = ((FIN - INICIO).total_seconds() / 3600 - horas_parada) * len(REACTORES)
 horas_detenidas = df_det["minutos"].sum() / 60
-horas_operativas = horas_planificadas - horas_detenidas
-velocidad_ideal = TONELADAS_POR_LOTE / HORAS_REACCION   # t/h por reactor
+horas_operativas = HORAS_PLANIFICADAS - horas_detenidas
 
 toneladas = df_lotes["toneladas"].sum()
 toneladas_buenas = df_lotes["toneladas_buenas"].sum()
 
-disponibilidad = horas_operativas / horas_planificadas
-rendimiento = toneladas / (velocidad_ideal * horas_operativas)
+disponibilidad = horas_operativas / HORAS_PLANIFICADAS
+rendimiento = toneladas / (VELOCIDAD_IDEAL * horas_operativas)
 calidad = toneladas_buenas / toneladas
 oee = disponibilidad * rendimiento * calidad
-verificacion = toneladas_buenas / (velocidad_ideal * horas_planificadas)
+verificacion = toneladas_buenas / (VELOCIDAD_IDEAL * HORAS_PLANIFICADAS)
 
 print("Lotes completados:", len(df_lotes), "| Toneladas producidas:", round(toneladas), "| Toneladas buenas:", round(toneladas_buenas))
 print("Disponibilidad:", round(disponibilidad * 100, 1), "%")
