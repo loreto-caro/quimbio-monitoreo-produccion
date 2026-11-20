@@ -18,16 +18,16 @@ jobs:
       url: ${{ steps.despliegue.outputs.page_url }}
     steps:
       - name: Descargar el código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5
 
       - name: Subir la carpeta sitio
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: sitio
 
       - name: Publicar
         id: despliegue
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
