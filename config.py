@@ -27,3 +27,15 @@ HORAS_PLANIFICADAS = (HORAS_PERIODO - DIAS_PARADA * 24) * len(REACTORES)
 # ===== Metas de gestión (ficha, sección 7) =====
 META = {"OEE": 62, "Disponibilidad": 80, "Rendimiento": 85, "Calidad": 92}
 ALERTA_OEE = 50
+
+# ===== Catálogo de causas de detención (ficha, sección 6) =====
+CAUSAS = {
+    "D01": "Limpieza entre lotes",
+    "D02": "Espera del laboratorio",
+    "D03": "Falla mecánica",
+    "D04": "Falta de materia prima",
+    "D05": "Alarma de seguridad del reactor",
+    "D06": "Falla de caldera o corte de vapor",
+    "D07": "Alarma de olor o falla del lavador",
+    "D08": "Episodio crítico (PPDA)",
+}
