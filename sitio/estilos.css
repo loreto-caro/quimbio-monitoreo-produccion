@@ -418,3 +418,52 @@ h1, h2, h3 {
     font-weight: 600;
     color: var(--cobre-claro);
 }
+/* ===== Trabaja con nosotros ===== */
+.subtitulo-separado {
+    margin-top: 64px;
+}
+
+.etiquetas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.etiqueta-area {
+    border: 1px solid var(--azul-petroleo);
+    color: var(--azul-petroleo);
+    padding: 8px 18px;
+    border-radius: 999px;
+    font-weight: 500;
+    font-size: 15px;
+}
+
+/* ===== Contacto ===== */
+.contacto {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+}
+
+.dato-contacto {
+    background-color: var(--blanco);
+    border-radius: 8px;
+    padding: 32px;
+}
+
+.dato-contacto h3 {
+    font-size: 18px;
+    color: var(--azul-petroleo);
+    margin-top: 0;
+}
+
+.dato-contacto p {
+    margin: 0;
+    color: #52606D;
+}
+
+.dato-contacto a {
+    color: var(--cobre-boton);
+    font-weight: 600;
+}
