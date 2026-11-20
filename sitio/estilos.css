@@ -273,7 +273,7 @@ h1, h2, h3 {
     font-weight: 500;
     color: #52606D;
     margin-top: 0;
-        margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 .producto-datos {
@@ -296,4 +296,64 @@ h1, h2, h3 {
     text-transform: uppercase;
     letter-spacing: 1px;
     color: #7B8794;
+}
+/* ===== Sostenibilidad (única sección con el verde de la marca) ===== */
+.seccion-sostenible .seccion-etiqueta {
+    color: var(--verde);
+}
+
+.compromisos {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.compromiso {
+    border: 1px solid #E1E6EB;
+    border-radius: 8px;
+    padding: 28px;
+}
+
+.compromiso-numero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid var(--verde);
+    color: var(--verde);
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+}
+
+.compromiso h3 {
+    font-size: 19px;
+    color: var(--azul-petroleo);
+    margin: 16px 0 8px;
+}
+
+.compromiso p {
+    margin: 0;
+    color: #52606D;
+}
+
+.compromiso strong {
+    color: var(--verde);
+}
+
+.aviso-datos {
+    background-color: #EDF5EE;
+    border-radius: 8px;
+    padding: 28px;
+}
+
+
+.aviso-datos h3 {
+    color: var(--verde);
+    margin-top: 0;
+}
+
+.aviso-datos p {
+    margin-bottom: 0;
 }
