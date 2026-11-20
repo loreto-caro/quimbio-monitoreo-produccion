@@ -16,7 +16,9 @@
 * {
     box-sizing: border-box;
 }
-
+html {
+    scroll-behavior: smooth;
+}
 body {
     margin: 0;
     font-family: "Inter", sans-serif;
@@ -146,4 +148,152 @@ h1, h2, h3 {
     display: block;
     font-size: 15px;
     color: var(--texto-sobre-azul);
+}
+/* ===== Secciones (estilos reutilizables) ===== */
+.seccion {
+    padding: 100px 6%;
+}
+
+.seccion-encabezado {
+    max-width: 760px;
+    margin-bottom: 48px;
+}
+
+.seccion-etiqueta {
+    color: var(--cobre-boton);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 14px;
+    margin: 0;
+}
+
+.seccion h2 {
+    font-size: 38px;
+    color: var(--azul-petroleo);
+    margin: 12px 0 16px;
+}
+
+.seccion-intro {
+    font-size: 18px;
+    color: #52606D;
+}
+
+/* ===== Nosotros ===== */
+.mision-vision {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 64px;
+}
+
+.tarjeta-acento {
+    background-color: var(--gris-claro);
+    border-left: 4px solid var(--cobre);
+    padding: 32px;
+}
+
+.tarjeta-acento h3 {
+    color: var(--azul-petroleo);
+    margin-top: 0;
+}
+
+.subtitulo {
+    font-size: 24px;
+    color: var(--azul-petroleo);
+    margin-bottom: 24px;
+}
+
+.valores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 24px;
+}
+
+.valor {
+    border-top: 2px solid var(--azul-petroleo);
+    padding-top: 16px;
+}
+
+.valor-numero {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--cobre);
+}
+
+.valor h4 {
+    font-size: 17px;
+    color: var(--azul-petroleo);
+    margin: 8px 0;
+}
+
+.valor p {
+    font-size: 15px;
+    color: #52606D;
+    margin: 0;
+}
+/* ===== Fondo alterno para secciones ===== */
+.seccion-gris {
+    background-color: var(--gris-claro);
+}
+
+/* ===== Productos ===== */
+.productos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.producto {
+    background-color: var(--blanco);
+    border-radius: 8px;
+    border-top: 4px solid var(--azul-petroleo);
+    padding: 32px;
+        display: flex;
+    flex-direction: column;
+}
+
+.producto-linea {
+    color: var(--cobre-boton);
+    font-weight: 600;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 0;
+}
+
+.producto h3 {
+    font-size: 26px;
+    color: var(--azul-petroleo);
+    margin: 8px 0 4px;
+}
+
+.producto-tipo {
+    font-weight: 500;
+    color: #52606D;
+    margin-top: 0;
+        margin-bottom: 0;
+}
+
+.producto-datos {
+    list-style: none;
+    padding: 0;
+    margin: auto 0 0;
+    border-top: 1px solid #E1E6EB;
+}
+
+.producto-datos li {
+    padding: 12px 0;
+    border-bottom: 1px solid #E1E6EB;
+    font-size: 15px;
+}
+
+.producto-datos span {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #7B8794;
 }
