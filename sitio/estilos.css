@@ -512,3 +512,41 @@ h1, h2, h3 {
     padding-top: 24px;
     font-size: 14px;
 }
+/* ===== Tablets (hasta 900 px) ===== */
+@media (max-width: 900px) {
+    .portada,
+    .comunidad {
+        grid-template-columns: 1fr;
+    }
+
+    .compromisos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ===== Celulares (hasta 600 px) ===== */
+@media (max-width: 600px) {
+    .seccion {
+        padding: 64px 6%;
+    }
+
+    .portada h1 {
+        font-size: 36px;
+    }
+
+    .seccion h2 {
+        font-size: 28px;
+    }
+
+    .mision-vision {
+        grid-template-columns: 1fr;
+        flex-direction: column;
+    }
+
+    .compromisos {
+        grid-template-columns: 1fr;
+    }
+}
+    .cifra-numero {
+        font-size: 30px;
+    }
