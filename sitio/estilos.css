@@ -613,3 +613,6 @@ h1, h2, h3 {
         height: 220px;
     }
 }
+.foto-sostenibilidad {
+    object-position: center 25%;
+}
