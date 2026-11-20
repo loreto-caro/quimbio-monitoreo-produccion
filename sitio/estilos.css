@@ -357,3 +357,64 @@ h1, h2, h3 {
 .aviso-datos p {
     margin-bottom: 0;
 }
+/* ===== Comunidad ===== */
+.comunidad {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 48px;
+    align-items: start;
+}
+
+.iniciativa {
+    padding: 24px 0;
+    border-bottom: 1px solid #DDE3E8;
+}
+
+.iniciativa:first-child {
+    padding-top: 0;
+}
+
+.iniciativa h3 {
+    font-size: 20px;
+    color: var(--azul-petroleo);
+    margin: 0 0 8px;
+}
+
+.iniciativa p {
+    margin: 0;
+    color: #52606D;
+}
+
+.canal-reclamos {
+    background-color: var(--azul-petroleo);
+    color: var(--blanco);
+    border-radius: 8px;
+    padding: 36px;
+}
+
+.canal-reclamos h3 {
+    font-size: 24px;
+    margin-top: 0;
+}
+
+.pasos {
+    padding-left: 20px;
+    color: var(--texto-sobre-azul);
+}
+
+.pasos li {
+    margin-bottom: 10px;
+}
+
+.pasos li::marker {
+    color: var(--cobre-claro);
+    font-weight: 700;
+}
+
+.contacto-reclamos {
+    margin-bottom: 0;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    font-weight: 600;
+    color: var(--cobre-claro);
+}
