@@ -4,6 +4,7 @@ import streamlit as st
 
 from config import (ALERTA_OEE, CAUSAS, DIAS_PARADA, FIN, HORAS_PLANIFICADAS, INICIO,
                     INICIO_PARADA, META, REACTORES, VELOCIDAD_IDEAL)
+from config import AZUL_PETROLEO, COBRE
 
 # Textos del semáforo, construidos a partir de las metas
 ESTADO_VERDE = f"Cumple meta (≥ {META['OEE']}%)"
@@ -82,7 +83,7 @@ pareto["porcentaje"] = pareto["minutos"] / pareto["minutos"].sum() * 100
 pareto["acumulado"] = pareto["minutos"].cumsum() / pareto["minutos"].sum() * 100
 
 st.subheader("Pareto de causas de detención")
-grafico = px.bar(pareto, x="nombre", y="horas", text="porcentaje")
+grafico = px.bar(pareto, x="nombre", y="horas", text="porcentaje", color_discrete_sequence=[AZUL_PETROLEO])
 grafico.update_traces(texttemplate="%{text:.1f} %", hovertemplate="%{x}: %{y:,.0f} h<extra></extra>")
 grafico.update_xaxes(title="")
 grafico.update_yaxes(title="Horas-reactor")

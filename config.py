@@ -39,3 +39,6 @@ CAUSAS = {
     "D07": "Alarma de olor o falla del lavador",
     "D08": "Episodio crítico (PPDA)",
 }
+# Colores de la marca (los mismos del sitio)
+AZUL_PETROLEO = "#0B3C5D"
+COBRE = "#B87333"
