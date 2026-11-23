@@ -35,8 +35,17 @@ def tarjeta(columna, titulo, valor, meta):
 
 # ===== Configuración de la página =====
 st.set_page_config(page_title="QuimBío · Monitoreo L1", page_icon="🏭", layout="wide")
-st.title("🏭 QuimBío Minería · Monitoreo Línea 1")
-st.caption("Empresa ficticia – proyecto de portafolio de Loreto Caro")
+st.markdown(
+    f'<p style="font-family: Montserrat; font-weight: 700; font-size: 22px; '
+    f'color: {AZUL_PETROLEO}; margin-bottom: 0;">'
+    f'Quim<span style="color: {COBRE};">Bío</span> Minería</p>',
+    unsafe_allow_html=True,
+)
+st.title("Monitoreo de producción · Línea 1")
+st.caption(
+    "Empresa ficticia – proyecto de portafolio de Loreto Caro · "
+    "[Volver al sitio](https://loreto-caro.github.io/quimbio-monitoreo-produccion/)"
+)
 
 # ===== Leer los datos =====
 detenciones = pd.read_csv("data/detenciones_L1_2026.csv")
