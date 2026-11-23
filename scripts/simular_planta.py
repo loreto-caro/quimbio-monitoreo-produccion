@@ -14,7 +14,7 @@ from datetime import timedelta
 import numpy as np
 import pandas as pd
 
-from config import (DIAS_PARADA, FIN, HORAS_PLANIFICADAS, HORAS_REACCION, INICIO,
+from config import (CORTE, DIAS_PARADA, FIN, HORAS_PLANIFICADAS, HORAS_REACCION, INICIO,
                     INICIO_PARADA, REACTORES, TONELADAS_POR_LOTE, VELOCIDAD_IDEAL)
 
 # ===== Parámetros de calibración del modelo =====
@@ -141,9 +141,9 @@ df_lotes = pd.DataFrame(todos_los_lotes)
 df_det = pd.DataFrame(todas_las_detenciones)
 
 # ===== Cierre del período: solo cuenta lo ocurrido dentro del período =====
-df_lotes = df_lotes[df_lotes["fin"] <= FIN]
-df_det = df_det[df_det["inicio"] < FIN]
-df_det["fin"] = df_det["fin"].clip(upper=FIN)
+df_lotes = df_lotes[df_lotes["fin"] <= CORTE]
+df_det = df_det[df_det["inicio"] < CORTE]
+df_det["fin"] = df_det["fin"].clip(upper=CORTE)
 
 # ===== Columnas calculadas =====
 df_det["minutos"] = (df_det["fin"] - df_det["inicio"]).dt.total_seconds() / 60

@@ -4,7 +4,7 @@ import streamlit as st
 
 from config import (ALERTA_OEE, CAUSAS, DIAS_PARADA, FIN, HORAS_PLANIFICADAS, INICIO,
                     INICIO_PARADA, META, REACTORES, VELOCIDAD_IDEAL)
-from config import AZUL_PETROLEO, COBRE
+from config import AZUL_PETROLEO, COBRE, CORTE
 
 # Textos del semáforo, construidos a partir de las metas
 ESTADO_VERDE = f"Cumple meta (≥ {META['OEE']}%)"
@@ -111,8 +111,9 @@ mensual["toneladas_buenas"] = mensual["mes"].map(lotes.groupby("mes")["toneladas
 
 # Horas-reactor planificadas de cada mes: horas del mes × reactores, menos la parada anual
 # (supuesto: la parada completa cae dentro del mes en que comienza)
-horas_del_mes = pd.Series(pd.date_range(INICIO, FIN, freq="h", inclusive="left")).dt.month.value_counts()
+horas_del_mes = pd.Series(pd.date_range(INICIO, CORTE, freq="h", inclusive="left")).dt.month.value_counts()
 mensual["horas_planificadas"] = mensual["mes"].map(horas_del_mes) * len(REACTORES)
+mensual = mensual[mensual["horas_planificadas"] > 0]
 mensual.loc[mensual["mes"] == INICIO_PARADA.month, "horas_planificadas"] -= DIAS_PARADA * 24 * len(REACTORES)
 if turno != "Todos":
     mensual["horas_planificadas"] = mensual["horas_planificadas"] / 2
