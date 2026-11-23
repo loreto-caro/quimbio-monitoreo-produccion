@@ -28,14 +28,24 @@ HOY = datetime.now(ZoneInfo("America/Santiago")).replace(
 )
 CORTE = min(HOY, FIN)
 
-# Horas del período, desde el inicio hasta el corte
-HORAS_PERIODO = (CORTE - INICIO).total_seconds() / 3600
+def calcular_horas_planificadas(corte):
+    """Horas-reactor planificadas desde INICIO hasta el corte, sin la parada."""
+    horas_periodo = (corte - INICIO).total_seconds() / 3600
+    fin_parada = INICIO_PARADA + timedelta(days=DIAS_PARADA)
+    horas_parada = max(0, (min(corte, fin_parada) - INICIO_PARADA).total_seconds() / 3600)
+    return (horas_periodo - horas_parada) * len(REACTORES)
 
-# Horas de parada que ya ocurrieron antes del corte
-FIN_PARADA = INICIO_PARADA + timedelta(days=DIAS_PARADA)
-HORAS_PARADA = max(0, (min(CORTE, FIN_PARADA) - INICIO_PARADA).total_seconds() / 3600)
 
-HORAS_PLANIFICADAS = (HORAS_PERIODO - HORAS_PARADA) * len(REACTORES)
+HORAS_PLANIFICADAS = calcular_horas_planificadas(CORTE)
+
+# Archivo donde el simulador anota hasta qué fecha llegan los datos
+ARCHIVO_CORTE = "data/corte.txt"
+
+
+def leer_corte():
+    """Lee la fecha de corte de los datos guardados."""
+    with open(ARCHIVO_CORTE) as archivo:
+        return datetime.fromisoformat(archivo.read().strip())
 
 # ===== Metas de gestión (ficha, sección 7) =====
 META = {"OEE": 62, "Disponibilidad": 80, "Rendimiento": 85, "Calidad": 92}

@@ -14,7 +14,7 @@ from datetime import timedelta
 import numpy as np
 import pandas as pd
 
-from config import (CORTE, DIAS_PARADA, FIN, HORAS_PLANIFICADAS, HORAS_REACCION, INICIO,
+from config import (ARCHIVO_CORTE, CORTE, DIAS_PARADA, FIN, HORAS_PLANIFICADAS, HORAS_REACCION, INICIO,
                     INICIO_PARADA, REACTORES, TONELADAS_POR_LOTE, VELOCIDAD_IDEAL)
 
 # ===== Parámetros de calibración del modelo =====
@@ -154,6 +154,8 @@ df_lotes["fecha"] = df_lotes["fin"].dt.date
 # ===== Guardar =====
 df_lotes.to_csv("data/lotes_L1_2026.csv", index=False)
 df_det.to_csv("data/detenciones_L1_2026.csv", index=False)
+with open(ARCHIVO_CORTE, "w") as archivo:
+    archivo.write(CORTE.isoformat())
 
 # ===== Validación del modelo: OEE =====
 horas_detenidas = df_det["minutos"].sum() / 60

@@ -4,7 +4,11 @@ import streamlit as st
 
 from config import (ALERTA_OEE, CAUSAS, DIAS_PARADA, FIN, HORAS_PLANIFICADAS, INICIO,
                     INICIO_PARADA, META, REACTORES, VELOCIDAD_IDEAL)
-from config import AZUL_PETROLEO, COBRE, CORTE
+from datetime import timedelta
+from config import AZUL_PETROLEO, COBRE, calcular_horas_planificadas, leer_corte
+# Fecha de corte de los datos (la anota el simulador) y horas planificadas hasta esa fecha
+CORTE = leer_corte()
+HORAS_PLANIFICADAS = calcular_horas_planificadas(CORTE)
 
 # Textos del semáforo, construidos a partir de las metas
 ESTADO_VERDE = f"Cumple meta (≥ {META['OEE']}%)"
@@ -46,6 +50,8 @@ st.caption(
     "Empresa ficticia – proyecto de portafolio de Loreto Caro · "
     "[Volver al sitio](https://loreto-caro.github.io/quimbio-monitoreo-produccion/)"
 )
+ultimo_dia = CORTE - timedelta(days=1)
+st.caption(f"📅 Datos actualizados al {ultimo_dia:%d-%m-%Y} · acumulado desde el 01-01-2026")
 
 # ===== Leer los datos =====
 detenciones = pd.read_csv("data/detenciones_L1_2026.csv")
